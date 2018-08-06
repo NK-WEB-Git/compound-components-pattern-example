@@ -5,6 +5,9 @@ import Progress from "./Progess";
 import Stage from "./Stage";
 import Steps from "./Steps";
 import Step from "./Step";
+import { branch, hasCondition } from "../HOC/hasProps";
+
+const StageWithNull = hasCondition(({ stage, num }) => stage === num, Step);
 
 class Stepper extends React.Component {
   state = {
@@ -22,7 +25,7 @@ class Stepper extends React.Component {
   static Progress = Progress;
   static Steps = Steps;
   static Stage = Stage;
-  static Step = Step;
+  static Step = StageWithNull;
 
   handleClick = () => {
     this.setState(prevState => ({ stage: prevState.stage + 1 }));
@@ -34,14 +37,11 @@ class Stepper extends React.Component {
 
   render() {
     const { stage } = this.state;
-    const children = React.Children.map(this.props.children, child =>
-      React.cloneElement(child, {
-        stage,
-        handleClick: this.handleClick,
-        handlePrevious: this.handlePrevious
-      })
+    return (
+      <div>
+        {this.props.render(stage, this.handleClick, this.handlePrevious)}
+      </div>
     );
-    return <div>{children}</div>;
   }
 }
 

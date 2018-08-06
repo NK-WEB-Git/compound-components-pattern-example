@@ -1,13 +1,9 @@
 import React from "react";
 
 function Steps({ stage, handleClick, handlePrevious, children }) {
-  const transformChildren = React.Children.map(children, child => {
-    return stage === child.props.num && child;
-  });
-
   return (
     <div>
-      {transformChildren}
+      {children}
       <button disabled={stage === 4} onClick={handleClick}>
         Next stage
       </button>
